@@ -1,0 +1,5 @@
+vivado_exec="/home/recolic/extraDisk/xilinx/Vivado/2018.1/bin/vivado"
+sources=(main.sv lib/*)
+constrain=(*.xdc)
+top_module=test_main
+thread_num=4
