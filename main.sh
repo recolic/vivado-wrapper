@@ -3,7 +3,7 @@
 _vw_bin_name="$0"
 
 _vw_version_major="0"
-_vw_version_minor="1"
+_vw_version_minor="2"
 _vw_version="${_vw_version_major}.${_vw_version_minor}"
 
 [[ $_vw_version_major == 0 ]] && echo "Vivado wrapper is unfinished, and unable to work." && exit 11
@@ -27,8 +27,8 @@ SubCommands:
         Build current project, using ./Vivadofile as configuration file.
         --top <top_module_name>
             Override top module appointed in Vivadofile.
-        --constrain <path/to/constrain.xdc>
-            Override the constrain file appointed in Vivadofile.
+        --constraint <path/to/constraint.xdc>
+            Override the constraint file appointed in Vivadofile.
         
     burn (Vivadofile required)
         Burn compiled top_module bit file into hardware board.
@@ -56,6 +56,22 @@ Examples:
     "
 }
 
+function where_is_him () {
+    SOURCE="$1"
+    while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+        DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+        SOURCE="$(readlink "$SOURCE")"
+        [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+    done
+    DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+    echo -n "$DIR"
+ }
+
+function where_am_i () {
+    _my_path=`type -p ${_vw_bin_name}`
+    where_is_him "$_my_path"
+}
+
 function import_vivadofile_impl () {
     [[ -e ./Vivadofile ]] && source ./Vivadofile && return 0
     [[ -e ./vivadofile ]] && source ./vivadofile && return 0
@@ -75,7 +91,7 @@ function import_vivadofile () {
     [[ "${top_module}" == '' ]] && echo "top_module not provided." && return 1
 }
 
-function get_constrain_of_module () {
+function get_constraint_of_module () {
     _mod_name="$1"
     for _ele in "${top_modules[@]}" ; do
         _key=${_ele%%:*}
@@ -85,7 +101,59 @@ function get_constrain_of_module () {
     return 1
 }
 
-vw_cmd="$1"
+function generate_real_project () {
+    # Create a temp real vivado project in /tmp, link all sources to it, and prepare for future usage.
+    cp -r "$my_path/template/project" "$temp_dir/"
+    for src in `echo ${sources[@]}`; do
+        _unpathed_src=`echo $src | tr '/' '_' | tr ' ' '_'`
+        ln -s "$(pwd)/$src" "$temp_dir/project/temp-project.srcs/sources_1/new/$_unpathed_src"
+    done
+    rm "$temp_dir/project/temp-project.srcs/constrs_1/new/constraint.xdc"
+    ln -s "$constr_path" "$temp_dir/project/temp-project.srcs/constrs_1/new/constraint.xdc"
+    echo "real_project generated at $temp_dir"
+}
+
+function clean_real_project () {
+    rm -rf $temp_dir
+    echo "real_project cleaned"
+}
+
+function do_init () {
+    mkdir constraint build
+    cp "$my_path"/template/Vivadofile ./Vivadofile
+    echo "init done."
+}
+
+function do_build () {
+    # TODO: Parse cmdline, override top_module and constr
+    constr_path="$(pwd)/$(get_constraint_of_module $top_module)"
+    generate_real_project
+
+    "$my_path/gen_tcl.sh" build "$temp_dir/project/temp-project.xpr" synth_1 impl_1 write_bitstream "$top_module" $thread_num > $temp_dir/sh.tcl
+    "$vivado_exec" -mode batch -source "$temp_dir/sh.tcl" -nojournal -nolog
+    _bit_file="$temp_dir/project/temp-project.runs/impl_1/$top_module.bit"
+    [[ -e "$_bit_file" ]] && cp "$_bit_file" "$bit_dir/$top_module.bit" || echo "vivado-wrapper: Error: Build failed."
+
+    clean_real_project
+}
+
+function burn_file () {
+    # TODO: Parse cmdline to get device_name if any.
+    file_to_burn="$1"
+    "$my_path/gen_tcl.sh" burn-file "$file_to_burn" > $temp_dir/sh.tcl
+    "$vivado_exec" -mode batch -source "$temp_dir/sh.tcl" -nojournal -nolog
+}
+
+function do_burn () {
+    # TODO: Parse cmdline, override top_module and device_name
+    burn_file "$bit_dir/$top_module.bit"
+}
+
+my_path=`where_am_i`
+temp_dir=`mktemp -d`
+# If noob user add space character in $1, just truncate it.
+vw_cmd=$1
+shift
 
 [[ $vw_cmd == '' ]] && show_help && exit 1
 [[ $vw_cmd == '--help' ]] && show_help && exit 0
@@ -94,4 +162,24 @@ if [[ $vw_cmd == 'build' ]] || [[ $vw_cmd == 'burn' ]] || [[ $vw_cmd == 'gui' ]]
     [[ $? != 0 ]] && echo "Vivadofile error reported. Exiting..." && exit 2
 fi
 
+case $vw_cmd in
+    'init' )
+        do_init
+        ;;
+    'build' )
+        do_build
+        ;;
+    'burn' )
+        do_burn
+        ;;
+    'gui' )
+        do_gui &
+        ;;
+    'burn-file' )
+        burn_file $1
+        ;;
+    * )
+        echo "Unknown command '${vw_cmd}', try '${_vw_bin_name} --help'"
+        ;;
+esac
 
