@@ -56,7 +56,9 @@ elif [[ $1 == burn-file ]]; then
     burn_file $2 $3
 elif [[ $1 == gui ]]; then
     xpr="$2"
+    proj_dir=`dirname ${xpr}`
     echo "open_project ${xpr}
+    `find ${proj_dir}/*.srcs -regex '^.*\.s?vh?$' -exec echo add_files \{\} \;`
     start_gui"
 else
     echo "Usage: $0 build <xpr path> <run_name_synth> <run_name_impl> <to_step> <top module name> <threads_num>

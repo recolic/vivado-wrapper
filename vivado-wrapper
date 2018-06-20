@@ -44,9 +44,10 @@ SubCommands:
             Device name to burn into. Auto-detect if not appointed.
 
     gui (Vivadofile required)
-        Launch vivado GUI, which has opened this project. Your modification to sources in vivado GUI
-          will be saved to the origin project. Your modification to other project-level configurations
-          will be discarded.
+        Launch vivado GUI, which has opened this project.
+        Warning: All modification to sources/constraints will be saved to origin project. All 
+          modification to other project-level configurations, adding or removing sources, will 
+          be discarded.
 
     burn-file <file_name>
         Burn a bit file into hardware board.
