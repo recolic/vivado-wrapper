@@ -1,5 +1,5 @@
 # Optional options
-vivado_exec="/home/recolic/extraDisk/xilinx/Vivado/2018.1/bin/vivado"
+# vivado_exec="/home/recolic/extraDisk/xilinx/Vivado/2018.1/bin/vivado"
 thread_num=4
 
 # Required options
