@@ -1,5 +1,13 @@
+# Optional options
 vivado_exec="/home/recolic/extraDisk/xilinx/Vivado/2018.1/bin/vivado"
-sources=(main.sv lib/*)
-constrain=(*.xdc)
-top_module=test_main
 thread_num=4
+
+# Required options
+sources=(test_main.sv lib/* ./mod?.v)
+bit_dir=./build
+
+top_modules=(
+    "test_main:constrain/test_main.xdc"
+    "mod1:constrain/mod1.xdc"
+)
+top_module=test_main
