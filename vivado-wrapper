@@ -15,6 +15,9 @@ _vw_version="${_vw_version_major}.${_vw_version_minor}"
 [[ $_vw_version_major == 0 ]] && echo "Vivado wrapper is unfinished, and unable to work." && exit 11
 [[ $_vw_bin_name == '' ]] && _vw_bin_name=vivado-wrapper
 
+trap "exit 9" TERM
+export _vw_mypid=$$
+
 function show_help () {
     echo "Vivado wrapper ${_vw_version}
 Usage:
@@ -61,6 +64,10 @@ Examples:
     ${_vw_bin_name} build --top some_other_module
     ${_vw_bin_name} burn-file build/another_module.bit
     "
+}
+
+function echo2 () {
+    echo $@ > /dev/fd/2
 }
 
 function where_is_him () {
@@ -110,14 +117,16 @@ function import_vivadofile () {
 }
 
 function get_constraint_of_module () {
+    # stdout of this function is used as return val.
     _mod_name="$1"
     for _ele in "${top_modules[@]}" ; do
         _key=${_ele%%:*}
         _value=${_ele#*:}
         [[ ${_key} == ${_mod_name} ]] && echo -n "${_value}" && return 0
     done
-    echo "Error: Can not find constraint for module '$_mod_name'"
-    exit 1
+    echo2 "Error: Can not find constraint for module '$_mod_name'"
+    # `exit 9` won't work. 
+    kill -s TERM $_vw_mypid
 }
 
 function generate_real_project () {
