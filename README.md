@@ -46,7 +46,7 @@ Or you can easily burn a pre-built bitstream:
 vivadow burn-file ./build/other_mod.bit
 ```
 
-- Run Simulation (Launch Vivado GUI)
+- Run Simulation (Or other GUI-only Tasks)
 
 Warning: All modification to sources/constraints will be saved to origin project. All modification to other project-level configurations, adding or removing sources, will be discarded.
 
@@ -56,4 +56,4 @@ vivadow gui
 
 ## Remote access (security concern)
 
-This script has not be carefully debugged, so it maybe injected. Never trust Vivadofile uploaded by others!
+This is a bash script, so it can be easily injected. Never trust Vivadofile uploaded by others!
