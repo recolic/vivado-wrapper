@@ -4,7 +4,7 @@
 
 # You may use SystemVerilog, Verilog, or VHDL files as sources.
 # sources=(test_main.sv lib/* ./mod?.v)
-sources=()
+sources=(src/*)
 
 # The directory where generated bitstream is put
 bit_dir=./build

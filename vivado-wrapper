@@ -139,7 +139,7 @@ function clean_real_project () {
 }
 
 function do_init () {
-    mkdir constraint build
+    mkdir constraint build src
     cp "$my_path"/template/Vivadofile ./Vivadofile
     echo "init done."
 }
