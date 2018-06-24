@@ -54,6 +54,8 @@ Warning: All modification to sources/constraints will be saved to origin project
 vivadow gui
 ```
 
-## Remote access (security concern)
+## Notice
 
 This is a bash script, so it can be easily injected. Never trust Vivadofile uploaded by others!
+
+If you give a wrong top\_module name, *silly vivado* will accept it, and generate bitstream for a **randomly-taken** module(with long time spent), then report error.
