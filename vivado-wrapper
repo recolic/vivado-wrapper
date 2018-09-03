@@ -100,6 +100,7 @@ function import_vivadofile_impl () {
     [[ -e ./Vivadofile ]] && source ./Vivadofile && return 0
     [[ -e ./vivadofile ]] && source ./vivadofile && return 0
     [[ -e ./VivadoFile ]] && source ./VivadoFile && return 0
+    [[ -e ./VIVADOFILE ]] && source ./VIVADOFILE && return 0
     return 1
 }
 
@@ -130,7 +131,7 @@ function get_constraint_of_module () {
 }
 
 function vivado_check_and_init_template () {
-    [[ -e "$board" ]] && echo "You must set variable 'board'. Try \`vivadow init\` again."
+    [[ -z "$board" ]] && echo "You must set variable 'board'. Try \`vivadow init\` again." && return 4
     [[ -d "$my_path/template/$board" ]] && return 0
     "$my_path/gen_tcl.sh" init-project temp_project "$my_path/template/$board" "$board" > $temp_dir/sh.tcl
     "$vivado_exec" -mode batch -source "$temp_dir/sh.tcl" -nojournal -nolog
@@ -140,7 +141,7 @@ function vivado_check_and_init_template () {
 
 function generate_real_project () {
     [[ "$constr_path" == '' ]] && constr_path="$(pwd)/$(get_constraint_of_module $top_module)"
-    vivado_check_and_init_template
+    vivado_check_and_init_template || return 4
     cp -r "$my_path/template/"* "$temp_dir/"
     ln -s "$temp_dir/$board" "$temp_dir/project"
     _real_proj_src="$temp_dir/project/temp_project.srcs"
@@ -167,11 +168,12 @@ function do_init () {
 
 function do_build () {
     generate_real_project
+    [[ $? -ne 0 ]] && echo "Generate real project failed." && clean_real_project && exit 4
 
     "$my_path/gen_tcl.sh" build "$temp_dir/project/temp_project.xpr" synth_1 impl_1 write_bitstream "$top_module" $thread_num > $temp_dir/sh.tcl
     "$vivado_exec" -mode batch -source "$temp_dir/sh.tcl" -nojournal -nolog
     _bit_file="$temp_dir/project/temp_project.runs/impl_1/$top_module.bit"
-    [[ -e "$_bit_file" ]] && cp "$_bit_file" "$bit_dir/$top_module.bit" || echo "vivado-wrapper: Error: Build failed."
+    [[ -e "$_bit_file" ]] && cp "$_bit_file" "$bit_dir/$top_module.bit" || echo "vivado-wrapper: Error: Build failed. Please check previous error report."
 
     clean_real_project
 }
