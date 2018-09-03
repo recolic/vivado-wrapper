@@ -33,6 +33,7 @@ if [[ $1 == build ]]; then
     # Copyright (C) Recolic Keghart <root@recolic.net>
     open_project ${xpr}
     `find ${proj_dir}/*.srcs -regex '^.*\.s?vh?$' -exec echo add_files \{\} \;`
+    `find ${proj_dir}/*.srcs -regex '^.*\.o?cc?p?p?x?x?$' -exec echo add_files \{\} \;`
     set_property top ${top_mod} [current_fileset]
     reset_run ${run_name_synth}
     reset_run ${run_name_impl}
@@ -59,6 +60,7 @@ elif [[ $1 == gui ]]; then
     proj_dir=`dirname ${xpr}`
     echo "open_project ${xpr}
     `find ${proj_dir}/*.srcs -regex '^.*\.s?vh?$' -exec echo add_files \{\} \;`
+    `find ${proj_dir}/*.srcs -regex '^.*\.o?cc?p?p?x?x?$' -exec echo add_files \{\} \;`
     start_gui"
 elif [[ $1 == init-project ]]; then
     proj_name="$2"
