@@ -118,7 +118,10 @@ function get_constraint_of_module () {
     for _ele in "${top_modules[@]}" ; do
         _key=${_ele%%:*}
         _value=${_ele#*:}
-        [[ ${_key} == ${_mod_name} ]] && echo -n "${_value}" && return 0
+        if [[ ${_key} == ${_mod_name} ]]; then
+            [[ -f "${_value}" ]] && echo -n "${_value}" && return 0
+            echo2 "Error: constraint file '${_value}' not found."
+        fi
     done
     echo2 "Error: Can not find constraint for module '$_mod_name'"
     # `exit 9` won't work. 
