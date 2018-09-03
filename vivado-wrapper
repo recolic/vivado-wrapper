@@ -3,7 +3,7 @@
 _vw_bin_name="$0"
 
 _vw_version_major="1"
-_vw_version_minor="0"
+_vw_version_minor="1"
 _vw_version="${_vw_version_major}.${_vw_version_minor}"
 
 [[ $_vw_version_major == 0 ]] && echo "Vivado wrapper is unfinished, and unable to work." && exit 11
