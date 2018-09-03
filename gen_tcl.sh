@@ -71,6 +71,7 @@ elif [[ $1 == init-project ]]; then
     close [ open ${proj_dir}/${proj_name}.srcs/constrs_1/new/constraint.xdc w ]
     add_files -fileset constrs_1 ${proj_dir}/${proj_name}.srcs/constrs_1/new/constraint.xdc"
     rm -f ${proj_dir}/${proj_name}.srcs/constrs_1/new/constraint.xdc
+    rm -rf ${proj_dir}/${proj_name}.cache/*
 else
     echo "Usage: $0 build <xpr path> <run_name_synth> <run_name_impl> <to_step> <top module name> <threads_num>
        $0 burn <xpr path> <run_name_impl> <top_module_name> <dev_name(Ex:xc7a100t_0)>"

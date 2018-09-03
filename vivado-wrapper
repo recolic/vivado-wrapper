@@ -129,10 +129,20 @@ function get_constraint_of_module () {
     kill -s TERM $_vw_mypid
 }
 
+function vivado_check_and_init_template () {
+    [[ -e "$board" ]] && echo "You must set variable 'board'. Try \`vivadow init\` again."
+    [[ -d "$my_path/template/$board" ]] && return 0
+    "$my_path/gen_tcl.sh" init-project temp_project "$my_path/template/$board" "$board" > $temp_dir/sh.tcl
+    "$vivado_exec" -mode batch -source "$temp_dir/sh.tcl" -nojournal -nolog
+    rm -f "$my_path/template/$board/temp_project/temp_project.srcs/constrs_1/new/constraint.xdc"
+    rm -rf "$my_path/template/$board/temp_project.cache/"*
+}
+
 function generate_real_project () {
     [[ "$constr_path" == '' ]] && constr_path="$(pwd)/$(get_constraint_of_module $top_module)"
-    cp -r "$my_path/template/project" "$temp_dir/"
-    # todo: use new init-project to generate if template not exist
+    vivado_check_and_init_template
+    cp -r "$my_path/template/"* "$temp_dir/"
+    ln -s "$temp_dir/$board" "$temp_dir/project"
     _real_proj_src="$temp_dir/project/temp_project.srcs"
     for src in `echo ${sources[@]}`; do
         mkdir -p "$_real_proj_src/sources_1/new/$(dirname "$src")"
@@ -150,6 +160,7 @@ function clean_real_project () {
 
 function do_init () {
     mkdir constraint build src
+    [[ -f ./Vivadofile ]] && mv ./Vivadofile ./Vivadofile.backup
     cp "$my_path"/template/Vivadofile ./Vivadofile
     echo "init done."
 }

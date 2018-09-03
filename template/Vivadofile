@@ -22,7 +22,7 @@ top_modules=(
 # top_module=test_main
 top_module=
 
-# Name of your board in vivado
+# Name of your board in vivado. HUST uses 'xc7a100tcsg324-1' by default.
 board="xc7a100tcsg324-1"
 
 #
