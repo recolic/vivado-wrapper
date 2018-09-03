@@ -1,10 +1,12 @@
 # Vivado Wrapper
 
-> Run vivado natively in linux command line.
+> Simple is beautiful.
 
 ![](https://img.shields.io/badge/license-GPL--3.0-red.svg)
 ![](https://img.shields.io/badge/vivado-AnyVersion-brightgreen.svg)
 ![](https://img.shields.io/badge/env-bash-yellowgreen.svg)
+
+A light & simple vivado project manager, natively working in Linux/Unix command line.
 
 ## Features
 
