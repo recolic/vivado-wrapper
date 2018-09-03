@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# TODO: Vivado create new project:
-# create_project temp_project /home/recolic/tmp/_log/temp_project -part xc7a100tcsg324-1
-# file mkdir /home/recolic/tmp/_log/temp_project/temp_project.srcs/constrs_1/new
-# close [ open /home/recolic/tmp/_log/temp_project/temp_project.srcs/constrs_1/new/constraint.xdc w ]
-# add_files -fileset constrs_1 /home/recolic/tmp/_log/temp_project/temp_project.srcs/constrs_1/new/constraint.xdc
-
 _vw_bin_name="$0"
 
 _vw_version_major="1"
