@@ -6,6 +6,8 @@
 
 - Init, build, burn any vivado project in one command.
 
+- Extremely simple, flexible, and customizable project layout.
+
 - Burn auto saved built binary at anytime and any machine.
 
 - Full vivado GUI support.
