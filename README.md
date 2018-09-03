@@ -2,6 +2,18 @@
 
 > Run vivado natively in linux command line.
 
+## Features
+
+- Init, build, burn any vivado project in one command.
+
+- Burn auto saved built binary at anytime and any machine.
+
+- Full vivado GUI support.
+
+- Support every hardware supported by vivado. 
+
+- Theoretically support any vivado version (But latest is the best).
+
 ## Installation
 
 ```sh
@@ -26,12 +38,10 @@ alias vivadow=vivado-wrapper # I'll use this wrapper in the doc below.
 mkdir my_project && cd my_project
 vivadow init
 code . # Or any editor you prefer.
-vim Vivadofile # To tell vivado-wrapper about your module~constraint relationship.
+vim Vivadofile # To tell vivado-wrapper about your module~constraint relationship, threads, board, etc.
 ```
 
 - Build Project
-
-Warning: this project will use `xc7a100tcsg324-1` (for HUST) as your board. Please fork and modify template if you'd like to use other board. We can easily support changing board by Vivadofile, if you can solve the TODO in ./vivado-wrapper:line5.
 
 ```sh
 cd vivado-wrapper/example
