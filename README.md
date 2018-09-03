@@ -79,3 +79,7 @@ vivadow gui
 This is a bash script, so it can be easily injected. `Vivadofile` and `.vwc` constraint will be directly `source`d. **Never** trust Vivadofile uploaded by others!
 
 If you give a wrong top\_module name, *silly vivado* will accept it, and generate bitstream for a **randomly-taken** module(with long time spent), then report error.
+
+## TODO
+
+Support bridging C/C++ into systemverilog via SV DPI. However my vivado 2018 failed to simulate it, saying `xsim.dir/tb_dpi_behav/xsimk: error while loading shared libraries: unexpected PLT reloc type 0x00`.
