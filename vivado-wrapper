@@ -132,12 +132,13 @@ function get_constraint_of_module () {
 function generate_real_project () {
     [[ "$constr_path" == '' ]] && constr_path="$(pwd)/$(get_constraint_of_module $top_module)"
     cp -r "$my_path/template/project" "$temp_dir/"
+    # todo: use new init-project to generate if template not exist
     _real_proj_src="$temp_dir/project/temp_project.srcs"
     for src in `echo ${sources[@]}`; do
         mkdir -p "$_real_proj_src/sources_1/new/$(dirname "$src")"
         ln -s "$(pwd)/$src" "$_real_proj_src/sources_1/new/$src"
     done
-    rm "$_real_proj_src/constrs_1/new/constraint.xdc"
+    rm -f "$_real_proj_src/constrs_1/new/constraint.xdc"
     ln -s "$constr_path" "$_real_proj_src/constrs_1/new/constraint.xdc"
     echo "real_project generated at $temp_dir"
 }

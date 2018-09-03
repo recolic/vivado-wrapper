@@ -22,6 +22,9 @@ top_modules=(
 # top_module=test_main
 top_module=
 
+# Name of your board in vivado
+board="xc7a100tcsg324-1"
+
 #
 # Optional options
 #
