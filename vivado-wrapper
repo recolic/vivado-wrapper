@@ -153,12 +153,18 @@ function clean_real_project () {
     echo "real_project cleaned"
 }
 
+function cp_with_backup () {
+    a="$1"
+    b="$2"
+    [[ -f "$b" ]] && mv "$b" "$b.backup"
+    cp "$a" "$b"
+}
+
 function do_init () {
     mkdir -p constraint build src
-    [[ -f ./Vivadofile ]] && mv ./Vivadofile ./Vivadofile.backup
-    cp "$my_path"/template/Vivadofile ./Vivadofile
+    cp_with_backup "$my_path"/template/Vivadofile ./Vivadofile
     echo "I'll provide a constraint file for xc7a100tcsg324-1, which is used by HUST students. Remove it if it's not your case."
-    cp "$my_path"/template/xc7a100tcsg324-1.xdc ./constraint
+    cp_with_backup "$my_path"/template/xc7a100tcsg324-1.xdc ./constraint/xc7a100tcsg324-1.xdc
     echo "Vivadow project inited."
 }
 
