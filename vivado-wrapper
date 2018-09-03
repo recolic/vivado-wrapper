@@ -100,7 +100,7 @@ function import_vivadofile_impl () {
 
 function import_vivadofile () {
     import_vivadofile_impl
-    [[ $? == 1 ]] && echo 'Vivadofile, vivadofile, VivadoFile not found.' && return 1
+    [[ $? == 1 ]] && echo 'Vivadofile, vivadofile, VivadoFile, VIVADOFILE not found.' && return 1
     [[ ! -e ${vivado_exec} ]] && echo "vivado_exec '${vivado_exec}' not found." && return 1
     [[ ! -x ${vivado_exec} ]] && echo "vivado_exec '${vivado_exec}' not executable." && return 1
     [[ "${thread_num}" == '' ]] && thread_num=1
