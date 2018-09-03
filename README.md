@@ -2,6 +2,10 @@
 
 > Run vivado natively in linux command line.
 
+![](https://img.shields.io/badge/license-GPL--3.0-red.svg)
+![](https://img.shields.io/badge/vivado-AnyVersion-brightgreen.svg)
+![](https://img.shields.io/badge/env-bash-yellowgreen.svg)
+
 ## Features
 
 - Init, build, burn any vivado project in one command.
