@@ -1,13 +1,37 @@
-# Optional options
-# vivado_exec="/home/recolic/extraDisk/xilinx/Vivado/2018.1/bin/vivado"
-thread_num=4
-
+#
 # Required options
+#
+
+# You may use SystemVerilog, Verilog, or VHDL files as sources.
+# sources=(test_main.sv lib/* ./mod?.v)
 sources=(test_main.sv lib/* ./mod?.v)
+
+# The directory where generated bitstream is put
 bit_dir=./build
 
+# All of your top_modules and its constraint files.
+# top_modules=(
+#     "test_main:constraint/test_main.xdc"
+#     "mod1:constraint/mod1.vwc"
+# )
 top_modules=(
     "test_main:constraint/test_main.xdc"
-    "mod1:constraint/mod1.xdc"
+    "mod1:constraint/mod1.vwc"
 )
+
+# Your default top_module. Maybe override by commandline option.
+# top_module=test_main
 top_module=test_main
+
+# Name of your board in vivado. HUST uses 'xc7a100tcsg324-1' by default.
+board="xc7a100tcsg324-1"
+
+#
+# Optional options
+#
+
+# Path to vivado executable. It will override environment variable `vivado_exec`
+# vivado_exec="/path/to/vivado"
+
+# It's recommanded to set thread_num to cores of your CPU.
+thread_num=4

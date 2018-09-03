@@ -10,6 +10,8 @@
 
 - Burn auto saved built binary at anytime and any machine.
 
+- Built-in support to an extremely simple constraint file format: `.vwc`.
+
 - Full vivado GUI support.
 
 - Support every hardware supported by vivado. 
@@ -68,6 +70,6 @@ vivadow gui
 
 ## Notice
 
-This is a bash script, so it can be easily injected. Never trust Vivadofile uploaded by others!
+This is a bash script, so it can be easily injected. `Vivadofile` and `.vwc` constraint will be directly `source`d. **Never** trust Vivadofile uploaded by others!
 
 If you give a wrong top\_module name, *silly vivado* will accept it, and generate bitstream for a **randomly-taken** module(with long time spent), then report error.

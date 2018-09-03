@@ -3,3 +3,4 @@ template/*
 !template/Vivadofile
 !template/*.xdc
 
+*.bit

@@ -12,7 +12,7 @@ bit_dir=./build
 # All of your top_modules and its constraint files.
 # top_modules=(
 #     "test_main:constraint/test_main.xdc"
-#     "mod1:constraint/mod1.xdc"
+#     "mod1:constraint/mod1.vwc"
 # )
 top_modules=(
 

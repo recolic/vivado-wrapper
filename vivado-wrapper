@@ -3,7 +3,7 @@
 _vw_bin_name="$0"
 
 _vw_version_major="1"
-_vw_version_minor="1"
+_vw_version_minor="2"
 _vw_version="${_vw_version_major}.${_vw_version_minor}"
 
 [[ $_vw_version_major == 0 ]] && echo "Vivado wrapper is unfinished, and unable to work." && exit 11
@@ -113,6 +113,7 @@ function import_vivadofile () {
 
 function get_constraint_of_module () {
     # stdout of this function is used as return val.
+    # Given module name, echo full constr path. Need vivadofile.
     _mod_name="$1"
     for _ele in "${top_modules[@]}" ; do
         _key=${_ele%%:*}
@@ -129,21 +130,26 @@ function vivado_check_and_init_template () {
     [[ -d "$my_path/template/$board" ]] && return 0
     "$my_path/gen_tcl.sh" init-project temp_project "$my_path/template/$board" "$board" > $temp_dir/sh.tcl
     "$vivado_exec" -mode batch -source "$temp_dir/sh.tcl" -nojournal -nolog
-    rm -f "$my_path/template/$board/temp_project/temp_project.srcs/constrs_1/new/constraint.xdc"
+    rm "$my_path/template/$board/temp_project.srcs/constrs_1/new/constraint.xdc"
     rm -rf "$my_path/template/$board/temp_project.cache/"*
 }
 
 function generate_real_project () {
-    [[ "$constr_path" == '' ]] && constr_path="$(pwd)/$(get_constraint_of_module $top_module)"
+    # Init the real project
     vivado_check_and_init_template || return 4
     cp -r "$my_path/template/"* "$temp_dir/"
     ln -s "$temp_dir/$board" "$temp_dir/project"
+
+    # Convert vwc constraints to xdc here
+    [[ "$constr_path" == '' ]] && constr_path="$(pwd)/$(get_constraint_of_module $top_module)"
+    [[ ${constr_path: -4} == ".vwc" ]] && "$my_path/vwc2xdc.sh" "$constr_path" > "$temp_dir/generated.xdc" && constr_path="$temp_dir/generated.xdc"
+
+    # Move sources and constraints
     _real_proj_src="$temp_dir/project/temp_project.srcs"
     for src in `echo ${sources[@]}`; do
         mkdir -p "$_real_proj_src/sources_1/new/$(dirname "$src")"
         ln -s "$(pwd)/$src" "$_real_proj_src/sources_1/new/$src"
     done
-    rm -f "$_real_proj_src/constrs_1/new/constraint.xdc"
     ln -s "$constr_path" "$_real_proj_src/constrs_1/new/constraint.xdc"
     echo "real_project generated at $temp_dir"
 }
@@ -165,6 +171,7 @@ function do_init () {
     cp_with_backup "$my_path"/template/Vivadofile ./Vivadofile
     echo "I'll provide a constraint file for xc7a100tcsg324-1, which is used by HUST students. Remove it if it's not your case."
     cp_with_backup "$my_path"/template/xc7a100tcsg324-1.xdc ./constraint/xc7a100tcsg324-1.xdc
+    cp_with_backup "$my_path"/template/xc7a100tcsg324-1.vwc ./constraint/xc7a100tcsg324-1.vwc
     echo "Vivadow project inited."
 }
 
