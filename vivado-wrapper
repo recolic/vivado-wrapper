@@ -3,7 +3,7 @@
 _vw_bin_name="$0"
 
 _vw_version_major="1"
-_vw_version_minor="0"
+_vw_version_minor="1"
 _vw_version="${_vw_version_major}.${_vw_version_minor}"
 
 [[ $_vw_version_major == 0 ]] && echo "Vivado wrapper is unfinished, and unable to work." && exit 11
@@ -100,7 +100,7 @@ function import_vivadofile_impl () {
 
 function import_vivadofile () {
     import_vivadofile_impl
-    [[ $? == 1 ]] && echo 'Vivadofile, vivadofile, VivadoFile not found.' && return 1
+    [[ $? == 1 ]] && echo 'Vivadofile, vivadofile, VivadoFile, VIVADOFILE not found.' && return 1
     [[ ! -e ${vivado_exec} ]] && echo "vivado_exec '${vivado_exec}' not found." && return 1
     [[ ! -x ${vivado_exec} ]] && echo "vivado_exec '${vivado_exec}' not executable." && return 1
     [[ "${thread_num}" == '' ]] && thread_num=1
@@ -153,11 +153,19 @@ function clean_real_project () {
     echo "real_project cleaned"
 }
 
+function cp_with_backup () {
+    a="$1"
+    b="$2"
+    [[ -f "$b" ]] && mv "$b" "$b.backup"
+    cp "$a" "$b"
+}
+
 function do_init () {
-    mkdir constraint build src
-    [[ -f ./Vivadofile ]] && mv ./Vivadofile ./Vivadofile.backup
-    cp "$my_path"/template/Vivadofile ./Vivadofile
-    echo "init done."
+    mkdir -p constraint build src
+    cp_with_backup "$my_path"/template/Vivadofile ./Vivadofile
+    echo "I'll provide a constraint file for xc7a100tcsg324-1, which is used by HUST students. Remove it if it's not your case."
+    cp_with_backup "$my_path"/template/xc7a100tcsg324-1.xdc ./constraint/xc7a100tcsg324-1.xdc
+    echo "Vivadow project inited."
 }
 
 function do_build () {
