@@ -2,7 +2,8 @@
 # Required options
 #
 
-# You may use SystemVerilog, Verilog, or VHDL files as sources.
+# You may use SystemVerilog, Verilog, or VHDL files as sources. (.sv .v .vh)
+# You may also use C, C++, ObjectC or SystemC files as sources. (.c .cc .cxx .cpp .oc .h .hh .hpp .hxx)
 # sources=(test_main.sv lib/* ./mod?.v)
 sources=(src/*)
 
