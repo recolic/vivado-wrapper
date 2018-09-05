@@ -2,5 +2,6 @@ template/*
 
 !template/Vivadofile
 !template/*.xdc
+!template/*.vwc
 
 *.bit
