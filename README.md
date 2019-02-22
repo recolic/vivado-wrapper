@@ -26,6 +26,12 @@ A light & simple vivado project manager, natively working in Linux/Unix command 
 
 ## Installation
 
+- Arch Linux
+
+You may install AUR package [vivado-wrapper](https://aur.archlinux.org/packages/vivado-wrapper) directly with your favorite package manager.
+
+- Other Linux
+
 ```sh
 git clone https://github.com/recolic/vivado-wrapper
 export vivado_exec="/path/to/your/vivado" # Bash
