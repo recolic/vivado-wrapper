@@ -3,14 +3,16 @@
 _vw_bin_name="$0"
 
 _vw_version_major="1"
-_vw_version_minor="3"
-_vw_version="${_vw_version_major}.${_vw_version_minor}"
+_vw_version_minor="4"
+_vw_version_ext=""
+_vw_version="${_vw_version_major}.${_vw_version_minor}${_vw_version_ext}"
 
 [[ $_vw_version_major == 0 ]] && echo "Vivado wrapper is unfinished, and unable to work." && exit 11
 [[ $_vw_bin_name == '' ]] && _vw_bin_name=vivado-wrapper
 
 trap "exit 9" TERM
 export _vw_mypid=$$
+shopt -s nullglob
 
 function show_help () {
     echo "Vivado wrapper ${_vw_version}
@@ -63,6 +65,18 @@ Examples:
 function echo2 () {
     echo $@ > /dev/fd/2
 }
+function echo_err () {
+    echo2 "[VIVADOW ERROR] " $@
+}
+function echo_warn () {
+    echo2 "[VIVADOW WARNING] " $@
+}
+function echo_info () {
+    echo2 "[VIVADOW INFO] " $@
+}
+function echo_debug () {
+    [[ $_vw_version_ext == 'dev' ]] && echo2 "[VIVADOW DEBUG] " $@
+}
 
 function where_is_him () {
     SOURCE="$1"
@@ -100,14 +114,14 @@ function import_vivadofile_impl () {
 
 function import_vivadofile () {
     import_vivadofile_impl
-    [[ $? == 1 ]] && echo 'Vivadofile, vivadofile, VivadoFile, VIVADOFILE not found.' && return 1
-    [[ ! -e ${vivado_exec} ]] && echo "vivado_exec '${vivado_exec}' not found." && return 1
-    [[ ! -x ${vivado_exec} ]] && echo "vivado_exec '${vivado_exec}' not executable." && return 1
+    [[ $? == 1 ]] && echo_err 'Vivadofile, vivadofile, VivadoFile, VIVADOFILE not found.' && return 1
+    [[ ! -e ${vivado_exec} ]] && echo_err "vivado_exec '${vivado_exec}' not found." && return 1
+    [[ ! -x ${vivado_exec} ]] && echo_err "vivado_exec '${vivado_exec}' not executable." && return 1
     [[ "${thread_num}" == '' ]] && thread_num=1
-    [[ "${sources[*]}" == '' ]] && echo "sources not provided." && return 1
-    [[ "${bit_dir}" == '' ]] && echo "bit_dir not provided." && return 1
-    [[ "${top_modules[*]}" == '' ]] && echo "top_modules not provided." && return 1
-    [[ "${top_module}" == '' ]] && echo "top_module not provided." && return 1
+    [[ "${sources[*]}" == '' ]] && echo_err "sources not provided." && return 1
+    [[ "${bit_dir}" == '' ]] && echo_err "bit_dir not provided." && return 1
+    [[ "${top_modules[*]}" == '' ]] && echo_err "top_modules not provided." && return 1
+    [[ "${top_module}" == '' ]] && echo_err "top_module not provided." && return 1
     return 0
 }
 
@@ -120,17 +134,20 @@ function get_constraint_of_module () {
         _value=${_ele#*:}
         if [[ ${_key} == ${_mod_name} ]]; then
             [[ -f "${_value}" ]] && echo -n "${_value}" && return 0
-            echo2 "Error: constraint file '${_value}' not found."
+            echo_err "constraint file '${_value}' not found."
         fi
     done
-    echo2 "Error: Can not find constraint for module '$_mod_name'"
-    # `exit 9` won't work. 
+    echo_err "Can not find constraint for module '$_mod_name'"
+    # `exit 9` won't work here. So I'm killing myself.
     kill -s TERM $_vw_mypid
+    # exit
 }
 
 function vivado_check_and_init_template () {
-    [[ -z "$board" ]] && echo "You must set variable 'board'. Try \`vivadow init\` again." && return 4
+    [[ -z "$board" ]] && echo_err "You must set variable 'board'. Try \`vivadow init\` again." && return 4
     [[ -d "$my_path/template/$board" ]] && return 0
+
+    echo_warn "Creating a new template for board $board. You may need permission to write to installation directory $my_path/template/"
     "$my_path/gen_tcl.sh" init-project temp_project "$my_path/template/$board" "$board" > $temp_dir/sh.tcl
     "$vivado_exec" -mode batch -source "$temp_dir/sh.tcl" -nojournal -nolog || return $?
     rm "$my_path/template/$board/temp_project.srcs/constrs_1/new/constraint.xdc"
@@ -148,18 +165,20 @@ function generate_real_project () {
     [[ ${constr_path: -4} == ".vwc" ]] && "$my_path/vwc2xdc.sh" "$constr_path" > "$temp_dir/generated.xdc" && constr_path="$temp_dir/generated.xdc"
 
     # Move sources and constraints
+    echo_debug ${#sources[@]} ${sources[@]}
+    [[ ${#sources[@]} -eq 0 ]] && echo_warn "No source file detected. However, I'll continue and have a try."
     _real_proj_src="$temp_dir/project/temp_project.srcs"
     for src in `echo ${sources[@]}`; do
         mkdir -p "$_real_proj_src/sources_1/new/$(dirname "$src")"
         ln -s "$(pwd)/$src" "$_real_proj_src/sources_1/new/$src"
     done
     ln -s "$constr_path" "$_real_proj_src/constrs_1/new/constraint.xdc"
-    echo "real_project generated at $temp_dir"
+    echo_info "real_project generated at $temp_dir"
 }
 
 function clean_real_project () {
     rm -rf $temp_dir ./.Xil
-    echo "real_project cleaned"
+    echo_info "real_project cleaned"
 }
 
 function cp_with_backup () {
@@ -172,23 +191,23 @@ function cp_with_backup () {
 function do_init () {
     mkdir -p constraint build src
     cp_with_backup "$my_path"/template/Vivadofile ./Vivadofile
-    echo "I'll provide a constraint file for xc7a100tcsg324-1, which is used by HUST students. Remove it if it's not your case."
+    echo_info "I'll provide a constraint file for xc7a100tcsg324-1, which is used by HUST students. Remove it if it's not your case."
     cp_with_backup "$my_path"/template/xc7a100tcsg324-1.xdc ./constraint/xc7a100tcsg324-1.xdc
     cp_with_backup "$my_path"/template/xc7a100tcsg324-1.vwc ./constraint/xc7a100tcsg324-1.vwc
-    echo "Vivadow project inited."
+    echo_info "Vivadow project inited."
 }
 
 function do_build () {
     generate_real_project
-    [[ $? -ne 0 ]] && echo "Generate real project failed." && clean_real_project && return 4
+    [[ $? -ne 0 ]] && echo_err "Generate real project failed." && clean_real_project && return 4
 
     "$my_path/gen_tcl.sh" build "$temp_dir/project/temp_project.xpr" synth_1 impl_1 write_bitstream "$top_module" $thread_num > $temp_dir/sh.tcl
     "$vivado_exec" -mode batch -source "$temp_dir/sh.tcl" -nojournal -nolog
     _ret=$?
-    [[ $_ret -ne 0 ]] && echo2 "vivado-wrapper: Error: Build failed. Please check previous error report." && clean_real_project && return $_ret
+    [[ $_ret -ne 0 ]] && echo_err "Build failed. Please check previous error report." && clean_real_project && return $_ret
     _bit_file="$temp_dir/project/temp_project.runs/impl_1/$top_module.bit"
     [[ -e "$_bit_file" ]] && cp "$_bit_file" "$bit_dir/$top_module.bit"
-    [[ $? -ne 0 ]] && echo2 "vivado-wrapper: Error: Build failed. Please check previous error report." && clean_real_project && return 5
+    [[ $? -ne 0 ]] && echo_err "vivado-wrapper: Error: Build failed. Please check previous error report." && clean_real_project && return 5
 
     clean_real_project
 }
@@ -223,7 +242,7 @@ shift
 [[ $vw_cmd == '--help' ]] && show_help && exit 0
 if [[ $vw_cmd == 'build' ]] || [[ $vw_cmd == 'burn' ]] || [[ $vw_cmd == 'gui' ]]; then
     import_vivadofile
-    [[ $? != 0 ]] && echo "Vivadofile error reported. Exiting..." && exit 2
+    [[ $? != 0 ]] && echo_err "Vivadofile error reported. Exiting..." && exit 2
 fi
 
 naive_opt $@
@@ -245,7 +264,7 @@ case $vw_cmd in
         burn_file $1
         ;;
     * )
-        echo "Unknown command '${vw_cmd}', try '${_vw_bin_name} --help'"
+        echo_err "Unknown command '${vw_cmd}', try '${_vw_bin_name} --help'"
         ;;
 esac
 
