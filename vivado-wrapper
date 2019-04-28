@@ -3,7 +3,7 @@
 _vw_bin_name="$0"
 
 _vw_version_major="1"
-_vw_version_minor="4"
+_vw_version_minor="5"
 _vw_version_ext=""
 _vw_version="${_vw_version_major}.${_vw_version_minor}${_vw_version_ext}"
 

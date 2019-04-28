@@ -79,17 +79,17 @@
 #vwc_port P2 led[15]
 
 ##Bank = 34, Pin name = IO_L5P_T0_34,Sch name = LED16_R
-#vwc_port K5 GB1_Red]
+#vwc_port K5 RGB1_Red
 ##Bank = 15, Pin name = IO_L5P_T0_AD9P_15,Sch name = LED16_G
-#vwc_port F13 GB1_Green]
+#vwc_port F13 RGB1_Green
 ##Bank = 35, Pin name = IO_L19N_T3_VREF_35,Sch name = LED16_B
-#vwc_port F6 GB1_Blue]
+#vwc_port F6 RGB1_Blue
 ##Bank = 34, Pin name = IO_0_34,Sch name = LED17_R
-#vwc_port K6 GB2_Red]
+#vwc_port K6 RGB2_Red
 ##Bank = 35, Pin name = IO_24P_T3_35,Sch name =  LED17_G
-#vwc_port H6 GB2_Green]
+#vwc_port H6 RGB2_Green
 ##Bank = CONFIG, Pin name = IO_L3N_T0_DQS_EMCCLK_14,Sch name = LED17_B
-#vwc_port L16 GB2_Blue]
+#vwc_port L16 RGB2_Blue
 
 
 
@@ -110,7 +110,7 @@
 #vwc_port L6 seg[6]
 
 ##Bank = 34, Pin name = IO_L16P_T2_34,Sch name = DP
-#vwc_port M4 p]
+#vwc_port M4 dp
 
 ##Bank = 34, Pin name = IO_L18N_T2_34,Sch name = AN0
 #vwc_port N6 an[0]
@@ -133,17 +133,17 @@
 
 ##Buttons
 ##Bank = 15, Pin name = IO_L3P_T0_DQS_AD1P_15,Sch name = CPU_RESET
-#vwc_port C12 tnCpuReset]
+#vwc_port C12 btnCpuReset
 ##Bank = 15, Pin name = IO_L11N_T1_SRCC_15,Sch name = BTNC
-#vwc_port E16 tnC]
+#vwc_port E16 btnC
 ##Bank = 15, Pin name = IO_L14P_T2_SRCC_15,Sch name = BTNU
-#vwc_port F15 tnU]
+#vwc_port F15 btnU
 ##Bank = CONFIG, Pin name = IO_L15N_T2_DQS_DOUT_CSO_B_14,Sch name = BTNL
-#vwc_port T16 tnL]
+#vwc_port T16 btnL
 ##Bank = 14, Pin name = IO_25_14,Sch name = BTNR
-#vwc_port R10 tnR]
+#vwc_port R10 btnR
 ##Bank = 14, Pin name = IO_L21P_T3_DQS_14,Sch name = BTND
-#vwc_port V10 tnD]
+#vwc_port V10 btnD
  
 
 
@@ -273,21 +273,21 @@
 ##Bank = 35, Pin name = IO_L3P_T0_DQS_AD5P_35,Sch name = VGA_G3
 #vwc_port A6 vgaGreen[3]
 ##Bank = 15, Pin name = IO_L4P_T0_15,Sch name = VGA_HS
-#vwc_port B11 sync]
+#vwc_port B11 Hsync
 ##Bank = 15, Pin name = IO_L3N_T0_DQS_AD1N_15,Sch name = VGA_VS
-#vwc_port B12 sync]
+#vwc_port B12 Vsync
 
 
 
 ##Micro SD Connector
 ##Bank = 35, Pin name = IO_L14P_T2_SRCC_35,Sch name = SD_RESET
-#vwc_port E2 dReset]
+#vwc_port E2 sdReset
 ##Bank = 35, Pin name = IO_L9N_T1_DQS_AD7N_35,Sch name = SD_CD
-#vwc_port A1 dCD]
+#vwc_port A1 sdCD
 ##Bank = 35, Pin name = IO_L9P_T1_DQS_AD7P_35,Sch name = SD_SCK
-#vwc_port B1 dSCK]
+#vwc_port B1 sdSCK
 ##Bank = 35, Pin name = IO_L16N_T2_35,Sch name = SD_CMD
-#vwc_port C1 dCmd]
+#vwc_port C1 sdCmd
 ##Bank = 35, Pin name = IO_L16P_T2_35,Sch name = SD_DAT0
 #vwc_port C2 sdData[0]
 ##Bank = 35, Pin name = IO_L18N_T2_35,Sch name = SD_DAT1
@@ -301,94 +301,94 @@
 
 ##Accelerometer
 ##Bank = 15, Pin name = IO_L6N_T0_VREF_15,Sch name = ACL_MISO
-#vwc_port D13 clMISO]
+#vwc_port D13 aclMISO
 ##Bank = 15, Pin name = IO_L2N_T0_AD8N_15,Sch name = ACL_MOSI
-#vwc_port B14 clMOSI]
+#vwc_port B14 aclMOSI
 ##Bank = 15, Pin name = IO_L12P_T1_MRCC_15,Sch name = ACL_SCLK
-#vwc_port D15 clSCK]
+#vwc_port D15 aclSCK
 ##Bank = 15, Pin name = IO_L12N_T1_MRCC_15,Sch name = ACL_CSN
-#vwc_port C15 clSS]
+#vwc_port C15 aclSS
 ##Bank = 15, Pin name = IO_L20P_T3_A20_15,Sch name = ACL_INT1
-#vwc_port C16 clInt1]
+#vwc_port C16 aclInt1
 ##Bank = 15, Pin name = IO_L11P_T1_SRCC_15,Sch name = ACL_INT2
-#vwc_port E15 clInt2]
+#vwc_port E15 aclInt2
 
 
 
 ##Temperature Sensor
 ##Bank = 15, Pin name = IO_L14N_T2_SRCC_15,Sch name = TMP_SCL
-#vwc_port F16 mpSCL]
+#vwc_port F16 tmpSCL
 ##Bank = 15, Pin name = IO_L13N_T2_MRCC_15,Sch name = TMP_SDA
-#vwc_port G16 mpSDA]
+#vwc_port G16 tmpSDA
 ##Bank = 15, Pin name = IO_L1P_T0_AD0P_15,Sch name = TMP_INT
-#vwc_port D14 mpInt]
+#vwc_port D14 tmpInt
 ##Bank = 15, Pin name = IO_L1N_T0_AD0N_15,Sch name = TMP_CT
-#vwc_port C14 mpCT]
+#vwc_port C14 tmpCT
 
 
 
 ##Omnidirectional Microphone
 ##Bank = 35, Pin name = IO_25_35,Sch name = M_CLK
-#vwc_port J5 icClk]
+#vwc_port J5 micClk
 ##Bank = 35, Pin name = IO_L24N_T3_35,Sch name = M_DATA
-#vwc_port H5 icData]
+#vwc_port H5 micData
 ##Bank = 35, Pin name = IO_0_35,Sch name = M_LRSEL
-#vwc_port F5 icLRSel]
+#vwc_port F5 micLRSel
 
 
 
 ##PWM Audio Amplifier
 ##Bank = 15, Pin name = IO_L4N_T0_15,Sch name = AUD_PWM
-#vwc_port A11 mpPWM]
+#vwc_port A11 ampPWM
 ##Bank = 15, Pin name = IO_L6P_T0_15,Sch name = AUD_SD
-#vwc_port D12 mpSD]
+#vwc_port D12 ampSD
 
 
 ##USB-RS232 Interface
 ##Bank = 35, Pin name = IO_L7P_T1_AD6P_35,Sch name = UART_TXD_IN
-#vwc_port C4 sRx]
+#vwc_port C4 RsRx
 ##Bank = 35, Pin name = IO_L11N_T1_SRCC_35,Sch name = UART_RXD_OUT
-#vwc_port D4 sTx]
+#vwc_port D4 RsTx
 ##Bank = 35, Pin name = IO_L12N_T1_MRCC_35,Sch name = UART_CTS
-#vwc_port D3 sCts]
+#vwc_port D3 RsCts
 ##Bank = 35, Pin name = IO_L5N_T0_AD13N_35,Sch name = UART_RTS
-#vwc_port E5 sRts]
+#vwc_port E5 RsRts
 
 
 
 ##USB HID (PS/2)
 ##Bank = 35, Pin name = IO_L13P_T2_MRCC_35,Sch name = PS2_CLK
-#vwc_port F4 S2Clk]
+#vwc_port F4 PS2Clk
 ##Bank = 35, Pin name = IO_L10N_T1_AD15N_35,Sch name = PS2_DATA
-#vwc_port B2 S2Data]
+#vwc_port B2 PS2Data
 
 
 
 ##SMSC Ethernet PHY
 ##Bank = 16, Pin name = IO_L11P_T1_SRCC_16,Sch name = ETH_MDC
-#vwc_port C9 hyMdc]
+#vwc_port C9 PhyMdc
 ##Bank = 16, Pin name = IO_L14N_T2_SRCC_16,Sch name = ETH_MDIO
-#vwc_port A9 hyMdio]
+#vwc_port A9 PhyMdio
 ##Bank = 35, Pin name = IO_L10P_T1_AD15P_35,Sch name = ETH_RSTN
-#vwc_port B3 hyRstn]
+#vwc_port B3 PhyRstn
 ##Bank = 16, Pin name = IO_L6N_T0_VREF_16,Sch name = ETH_CRSDV
-#vwc_port D9 hyCrs]
+#vwc_port D9 PhyCrs
 ##Bank = 16, Pin name = IO_L13N_T2_MRCC_16,Sch name = ETH_RXERR
-#vwc_port C10 hyRxErr]
+#vwc_port C10 PhyRxErr
 ##Bank = 16, Pin name = IO_L19N_T3_VREF_16,Sch name = ETH_RXD0
 #vwc_port D10 PhyRxd[0]
 ##Bank = 16, Pin name = IO_L13P_T2_MRCC_16,Sch name = ETH_RXD1
 #vwc_port C11 PhyRxd[1]
 ##Bank = 16, Pin name = IO_L11N_T1_SRCC_16,Sch name = ETH_TXEN
-#vwc_port B9 hyTxEn]
+#vwc_port B9 PhyTxEn
 ##Bank = 16, Pin name = IO_L14P_T2_SRCC_16,Sch name = ETH_TXD0
 #vwc_port A10 PhyTxd[0]
 ##Bank = 16, Pin name = IO_L12N_T1_MRCC_16,Sch name = ETH_TXD1
 #vwc_port A8 PhyTxd[1]
 ##Bank = 35, Pin name = IO_L11P_T1_SRCC_35,Sch name = ETH_REFCLK
-#vwc_port D5 hyClk50Mhz]
+#vwc_port D5 PhyClk50Mhz
 ##Bank = 16, Pin name = IO_L12P_T1_MRCC_16,Sch name = ETH_INTN
-#vwc_port B8 hyIntn]
+#vwc_port B8 PhyIntn
 
 
 
@@ -404,29 +404,29 @@
 ##Bank = CONFIG, Pin name = IO_L2P_T0_D03_14,Sch name = QSPI_DQ3
 #vwc_port M14 QspiDB[3]
 ##Bank = CONFIG, Pin name = IO_L15N_T2_DQS_DOUT_CSO_B_14,Sch name = QSPI_CSN
-#vwc_port L13 spiCSn]
+#vwc_port L13 QspiCSn
 
 
 
 ##Cellular RAM
 ##Bank = 14, Pin name = IO_L14N_T2_SRCC_14,Sch name = CRAM_CLK
-#vwc_port T15 amCLK]
+#vwc_port T15 RamCLK
 ##Bank = 14, Pin name = IO_L23P_T3_A03_D19_14,Sch name = CRAM_ADVN
-#vwc_port T13 amADVn]
+#vwc_port T13 RamADVn
 ##Bank = 14, Pin name = IO_L4P_T0_D04_14,Sch name = CRAM_CEN
-#vwc_port L18 amCEn]
+#vwc_port L18 RamCEn
 ##Bank = 15, Pin name = IO_L19P_T3_A22_15,Sch name = CRAM_CRE
-#vwc_port J14 amCRE]
+#vwc_port J14 RamCRE
 ##Bank = 15, Pin name = IO_L15P_T2_DQS_15,Sch name = CRAM_OEN
-#vwc_port H14 amOEn]
+#vwc_port H14 RamOEn
 ##Bank = 14, Pin name = IO_0_14,Sch name = CRAM_WEN
-#vwc_port R11 amWEn]
+#vwc_port R11 RamWEn
 ##Bank = 15, Pin name = IO_L24N_T3_RS0_15,Sch name = CRAM_LBN
-#vwc_port J15 amLBn]
+#vwc_port J15 RamLBn
 ##Bank = 15, Pin name = IO_L17N_T2_A25_15,Sch name = CRAM_UBN
-#vwc_port J13 amUBn]
+#vwc_port J13 RamUBn
 ##Bank = 14, Pin name = IO_L14P_T2_SRCC_14,Sch name = CRAM_WAIT
-#vwc_port T14 amWait]
+#vwc_port T14 RamWait
 
 ##Bank = 14, Pin name = IO_L5P_T0_DQ06_14,Sch name = CRAM_DQ0
 #vwc_port R12 MemDB[0]
