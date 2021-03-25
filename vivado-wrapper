@@ -3,7 +3,7 @@
 _vw_bin_name="$0"
 
 _vw_version_major="1"
-_vw_version_minor="5"
+_vw_version_minor="6"
 _vw_version_ext=""
 _vw_version="${_vw_version_major}.${_vw_version_minor}${_vw_version_ext}"
 
@@ -91,7 +91,7 @@ function where_is_him () {
 
 function where_am_i () {
     _my_path=`type -p ${_vw_bin_name}`
-    where_is_him "$_my_path"
+    [[ "$_my_path" = "" ]] && where_is_him "$_vw_bin_name" || where_is_him "$_my_path"
 }
 
 function naive_opt () {
